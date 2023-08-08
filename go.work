@@ -1,3 +1,0 @@
-go 1.20
-
-use ./speech-recognition/speech-to-text-cv
