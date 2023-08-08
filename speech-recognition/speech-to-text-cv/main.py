@@ -8,9 +8,16 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def speech_recognize_continuous_async_from_microphone():
+def speech_recognize_continuous_async_from_microphone(keyword: str = "stop"):
+    """
+    Performs continuous speech recognition from microphone and returns array of recognized sentences.
+
+    Stops when recognized speech includes keyword.
+
+    The default keyword is `stop`.
+
+    """
     text = []
-    """performs continuous speech recognition asynchronously with input from microphone"""
     speech_config = speechsdk.SpeechConfig(
         subscription=os.environ.get("SPEECH_KEY"),
         region=os.environ.get("SPEECH_REGION"),
@@ -19,8 +26,6 @@ def speech_recognize_continuous_async_from_microphone():
     speech_config.speech_recognition_language = "pl-PL"
 
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
-
-    keyword = "prześlij formularz"
 
     done = False
 
@@ -46,7 +51,7 @@ def speech_recognize_continuous_async_from_microphone():
     result_future.get()
     print("Continuous Recognition is now running, say something.")
 
-    print('Powiedz "Prześlij formularz" aby zakończyć nasłuchiwanie...')
+    print(f'Powiedz "{keyword}" aby zakończyć nasłuchiwanie...')
     while not done:
         continue
     speech_recognizer.stop_continuous_recognition_async()
@@ -54,7 +59,7 @@ def speech_recognize_continuous_async_from_microphone():
     return text
 
 
-text = speech_recognize_continuous_async_from_microphone()
+text = speech_recognize_continuous_async_from_microphone("prześlij formularz")
 print(" ".join(text))
 
 # chat_completion = openai.ChatCompletion.create(
