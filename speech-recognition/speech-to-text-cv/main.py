@@ -1,11 +1,16 @@
 import os
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
+import openai
 
 load_dotenv()
 
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def recognize_from_microphone():
+
+def speech_recognize_continuous_async_from_microphone():
+    text = []
+    """performs continuous speech recognition asynchronously with input from microphone"""
     speech_config = speechsdk.SpeechConfig(
         subscription=os.environ.get("SPEECH_KEY"),
         region=os.environ.get("SPEECH_REGION"),
@@ -13,28 +18,48 @@ def recognize_from_microphone():
 
     speech_config.speech_recognition_language = "pl-PL"
 
-    audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
-    speech_recognizer = speechsdk.SpeechRecognizer(
-        speech_config=speech_config, audio_config=audio_config
-    )
+    speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
 
-    print("Speak into your microphone.")
-    speech_recognition_result = speech_recognizer.recognize_once_async().get()
+    keyword = "prześlij formularz"
 
-    if speech_recognition_result.reason == speechsdk.ResultReason.RecognizedSpeech:
-        print("Recognized: {}".format(speech_recognition_result.text))
-    elif speech_recognition_result.reason == speechsdk.ResultReason.NoMatch:
-        print(
-            "No speech could be recognized: {}".format(
-                speech_recognition_result.no_match_details
-            )
-        )
-    elif speech_recognition_result.reason == speechsdk.ResultReason.Canceled:
-        cancellation_details = speech_recognition_result.cancellation_details
-        print("Speech Recognition canceled: {}".format(cancellation_details.reason))
-        if cancellation_details.reason == speechsdk.CancellationReason.Error:
-            print("Error details: {}".format(cancellation_details.error_details))
-            print("Did you set the speech resource key and region values?")
+    done = False
+
+    def recognized_cb(evt: speechsdk.SpeechRecognitionEventArgs):
+        if keyword in evt.result.text.lower():
+            nonlocal done
+            done = True
+        print(evt.result.text)
+        text.append(evt.result.text)
+
+    def stop_cb(evt: speechsdk.SessionEventArgs):
+        """callback that signals to stop continuous recognition"""
+        print("CLOSING on {}".format(evt))
+        nonlocal done
+        done = True
+
+    speech_recognizer.recognized.connect(recognized_cb)
+    speech_recognizer.session_stopped.connect(stop_cb)
+    speech_recognizer.canceled.connect(stop_cb)
+
+    result_future = speech_recognizer.start_continuous_recognition_async()
+
+    result_future.get()
+    print("Continuous Recognition is now running, say something.")
+
+    print('Powiedz "Prześlij formularz" aby zakończyć nasłuchiwanie...')
+    while not done:
+        continue
+    speech_recognizer.stop_continuous_recognition_async()
+    print("recognition stopped, main thread can exit now.")
+    return text
 
 
-recognize_from_microphone()
+text = speech_recognize_continuous_async_from_microphone()
+print(" ".join(text))
+
+# chat_completion = openai.ChatCompletion.create(
+#     model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hello world"}]
+# )
+
+# # print the chat completion
+# print(chat_completion.choices[0].message.content)
