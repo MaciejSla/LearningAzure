@@ -1,11 +1,11 @@
 import os
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
-import openai
+from tinydb import TinyDB
+
+db = TinyDB("db.json")
 
 load_dotenv()
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def speech_recognize_continuous_async_from_microphone(keywords: list = ["stop"]):
@@ -65,10 +65,6 @@ text = speech_recognize_continuous_async_from_microphone(
     ["prześlij formularz", "zapisz", "wyślij"]
 )
 print(" ".join(text))
+document = {"text": text}
 
-# chat_completion = openai.ChatCompletion.create(
-#     model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hello world"}]
-# )
-
-# # print the chat completion
-# print(chat_completion.choices[0].message.content)
+db.insert(document)
