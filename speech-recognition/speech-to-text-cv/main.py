@@ -68,3 +68,6 @@ print(" ".join(text))
 document = {"text": text}
 
 db.insert(document)
+
+# Potential chatGPT query
+f'Jakie dane osobowe zawiera to zdanie: {text}? Podaj mi je w formacie dokumentu JSON z następującymi polami: name, surname, age, mail, phone, job, education, known_languages, interests. W pola dla których brakuje informacji wpisz "-".'

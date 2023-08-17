@@ -1,1 +1,6 @@
-{"_default": {"1": {"text": ["Test programu.", "Wy\u015blij."]}, "2": {"text": ["Test programu znowu.", "Zapisz."]}}}
+{
+  "_default": {
+    "1": { "text": ["Test programu.", "Wy\u015blij."] },
+    "2": { "text": ["Test programu znowu.", "Zapisz."] }
+  }
+}
