@@ -2,10 +2,18 @@ import os
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
 from tinydb import TinyDB
-
-db = TinyDB("db.json")
+import os
+import openai
+import json
 
 load_dotenv()
+
+openai.api_type = "azure"
+openai.api_base = "https://etrust-openai-devel.openai.azure.com/"
+openai.api_version = "2022-12-01"
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+db = TinyDB("db.json")
 
 
 def speech_recognize_continuous_async_from_microphone(keywords: list = ["stop"]):
@@ -64,10 +72,27 @@ def speech_recognize_continuous_async_from_microphone(keywords: list = ["stop"])
 text = speech_recognize_continuous_async_from_microphone(
     ["prześlij formularz", "zapisz", "wyślij"]
 )
-print(" ".join(text))
-document = {"text": text}
-
-db.insert(document)
 
 # Potential chatGPT query
-f'Jakie dane osobowe zawiera to zdanie: {text}? Podaj mi je w formacie dokumentu JSON z następującymi polami: name, surname, age, mail, phone, job, education, known_languages, interests. W pola dla których brakuje informacji wpisz "-".'
+prompt = f'Jakie dane osobowe zawiera to zdanie: {" ".join(text)}? Podaj mi je w formacie dokumentu JSON z następującymi polami: name, surname, age, mail, phone, job, education, known_languages, interests. W pola dla których brakuje informacji wpisz "-".'
+
+
+response = openai.Completion.create(
+    engine="gpt-learning",
+    prompt=prompt,
+    temperature=0,
+    max_tokens=300,
+    top_p=1,
+    frequency_penalty=0,
+    presence_penalty=0,
+    stop=["}"],
+)
+
+response_text = (
+    "{"
+    + response.choices[0].text.split("{", 1)[1].replace("\n", "").replace("'", '"')
+    + "}"
+)
+
+final_object = json.loads(response_text)
+db.insert(final_object)
