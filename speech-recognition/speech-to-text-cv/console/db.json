@@ -1,0 +1,26 @@
+{
+  "_default": {
+    "1": {
+      "name": "Ma",
+      "surname": "Nowak",
+      "age": "36",
+      "mail": "-",
+      "phone": "-",
+      "job": "-",
+      "education": "-",
+      "known_languages": "-",
+      "interests": "poci\u0105gi"
+    },
+    "2": {
+      "name": "Jan",
+      "surname": "Nowak",
+      "age": 47,
+      "mail": "-",
+      "phone": "123 456 789",
+      "job": "fryzjer",
+      "education": "-",
+      "known_languages": "-",
+      "interests": "pi\u0142ka no\u017cna"
+    }
+  }
+}
