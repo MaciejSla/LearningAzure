@@ -1,15 +1,6 @@
 import { getTokenOrRefresh } from '$lib/token_util';
-import { writable } from 'svelte/store';
+import { writableStore } from '$lib/store';
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
-
-export const writableStore = writable('INITIALIZED: ready to test speech...');
-
-export async function componentDidMount() {
-	const tokenRes = await getTokenOrRefresh();
-	if (tokenRes.authToken === null) {
-		writableStore.set('FATAL_ERROR: ' + tokenRes.error);
-	}
-}
 
 export async function fromMic() {
 	const tokenObj = await getTokenOrRefresh();
