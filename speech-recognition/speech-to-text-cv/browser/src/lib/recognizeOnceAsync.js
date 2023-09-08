@@ -2,7 +2,7 @@ import { getTokenOrRefresh } from '$lib/token_util';
 import { writableStore } from '$lib/store';
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
 
-export async function fromMic() {
+export async function fromMicOnce() {
 	const tokenObj = await getTokenOrRefresh();
 	const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(tokenObj.authToken, tokenObj.region);
 	speechConfig.speechRecognitionLanguage = 'pl-PL';
@@ -15,7 +15,7 @@ export async function fromMic() {
 	recognizer.recognizeOnceAsync((result) => {
 		let displayText;
 		if (result.reason === sdk.ResultReason.RecognizedSpeech) {
-			displayText = `RECOGNIZED: Text=${result.text}`;
+			displayText = result.text;
 		} else {
 			displayText =
 				'ERROR: Speech was cancelled or could not be recognized. Ensure your microphone is working properly.';

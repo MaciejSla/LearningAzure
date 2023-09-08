@@ -1,5 +1,5 @@
 <script>
-    import {fromMic} from '$lib/recognizeOnceAsync'
+    import {fromMicOnce} from '$lib/recognizeOnceAsync'
     import {componentDidMount} from '$lib/componentDidMount'
     import {writableStore} from '$lib/store'
 	import { onMount } from 'svelte';
@@ -8,7 +8,12 @@
     writableStore.subscribe((value) => {
         text = value;
     })
+    function startRecognition() {
+        text = "wait..."
+        fromMicOnce()
+    }
 </script>
 
 <p>{text}</p>
-<button on:click={fromMic}>Test</button>
+<input type="text" bind:value={text}>
+<button on:click={startRecognition}>Test</button>
