@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@azure/openai": "^1.0.0-beta.5",
 		"axios": "^1.5.0",
 		"microsoft-cognitiveservices-speech-sdk": "^1.31.0",
 		"mysql2": "^3.6.0",
