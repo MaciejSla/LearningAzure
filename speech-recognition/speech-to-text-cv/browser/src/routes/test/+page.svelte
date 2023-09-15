@@ -1,7 +1,11 @@
 <script>
-    // import axios from 'axios'
+	import axios from 'axios';
 	import { onMount } from 'svelte';
-    onMount(() => {
-        fetch("/api/db")
+    let result = '';
+    onMount(async () => {
+        let res = await axios.get("/api/db/getUser")
+        result = res.data
     })
 </script>
+
+<p>{JSON.stringify(result)}</p>
