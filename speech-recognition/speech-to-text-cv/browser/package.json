@@ -24,6 +24,7 @@
 		"knex": "^2.5.1",
 		"microsoft-cognitiveservices-speech-sdk": "^1.31.0",
 		"mysql2": "^3.6.0",
+		"treeize": "^2.1.2",
 		"universal-cookie": "^6.1.1"
 	}
 }
