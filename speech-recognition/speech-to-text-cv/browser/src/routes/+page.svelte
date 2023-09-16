@@ -15,6 +15,7 @@
         fromMicOnce()
     }
     async function askGPT() {
+        name = "loading..."
         axios.post('/api/get-completion', {text}).then(res => {
             name = JSON.stringify(res.data)
         }).catch(err => {

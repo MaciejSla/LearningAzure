@@ -37,8 +37,13 @@ export async function POST({ request }) {
 				completion.name = completion.name.charAt(0).toUpperCase() + completion.name.slice(1);
 			}
 			if (completion.surname != '-') {
-				completion.surname =
-					completion.surname.charAt(0).toUpperCase() + completion.surname.slice(1);
+				completion.surname = completion.surname
+					.split(' ')
+					.map((x) => x.charAt(0).toUpperCase() + x.slice(1))
+					.join(' ')
+					.split('-')
+					.map((x) => x.charAt(0).toUpperCase() + x.slice(1))
+					.join('-');
 			}
 		} catch {
 			return new Response('Incorrect information given - cannot parse input.', { status: 422 });
