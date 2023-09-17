@@ -1,10 +1,35 @@
 import { json } from '@sveltejs/kit';
 import { PrismaClient } from '@prisma/client';
 
-// TODO Get acutal query from client via POST
+const prisma = new PrismaClient();
 
-export async function GET() {
-	const prisma = new PrismaClient();
+export async function POST({ request }) {
+	const filter = await request.json();
+	filter.AND = [];
+	if (filter.known_languages) {
+		filter.known_languages.map((x) => {
+			filter.AND.push({
+				known_languages: {
+					some: {
+						name: x
+					}
+				}
+			});
+		});
+		delete filter.known_languages;
+	}
+	if (filter.interests) {
+		filter.interests.map((x) => {
+			filter.AND.push({
+				interests: {
+					some: {
+						name: x
+					}
+				}
+			});
+		});
+		delete filter.interests;
+	}
 
 	let users;
 
@@ -29,7 +54,8 @@ export async function GET() {
 			include: {
 				known_languages: true,
 				interests: true
-			}
+			},
+			where: filter
 		});
 		users = raw.map((x) => ({
 			...x,
