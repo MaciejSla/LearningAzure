@@ -1,5 +1,5 @@
 import { getTokenOrRefresh } from '$lib/token_util';
-import { writableStore } from '$lib/store';
+import { messageStore, resultStore } from '$lib/store';
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
 
 export async function fromMicOnce() {
@@ -10,17 +10,16 @@ export async function fromMicOnce() {
 	const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
 	const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
-	writableStore.set('speak into your microphone...');
+	messageStore.set('');
 
 	recognizer.recognizeOnceAsync((result) => {
-		let displayText;
 		if (result.reason === sdk.ResultReason.RecognizedSpeech) {
-			displayText = result.text;
+			resultStore.set(result.text);
 		} else {
-			displayText =
-				'ERROR: Speech was cancelled or could not be recognized. Ensure your microphone is working properly.';
+			messageStore.set(
+				'ERROR: Speech was cancelled or could not be recognized. Ensure your microphone is working properly.'
+			);
+			resultStore.set('');
 		}
-
-		writableStore.set(displayText);
 	});
 }
