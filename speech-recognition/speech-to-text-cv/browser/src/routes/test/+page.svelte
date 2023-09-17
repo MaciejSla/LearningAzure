@@ -1,11 +1,14 @@
 <script>
 	import axios from 'axios';
 	import { onMount } from 'svelte';
-    let result = '';
+    let result = 'loading...';
     onMount(async () => {
-        let res = await axios.get("/api/db/getUser")
-        result = res.data
+        await axios.post("/api/db/getUser", {name: "Mariusz"}).then(res => {
+            result = JSON.stringify(res.data)
+        }).catch(err => {
+            result = err.response.data
+        })
     })
 </script>
 
-<p>{JSON.stringify(result)}</p>
+<p>{result}</p>
