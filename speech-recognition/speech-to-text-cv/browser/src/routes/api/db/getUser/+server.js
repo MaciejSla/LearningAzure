@@ -1,29 +1,52 @@
-import { knexConnect } from '$lib/db/knex';
-import Treeize from 'treeize';
 import { json } from '@sveltejs/kit';
+import { PrismaClient } from '@prisma/client';
 
 // TODO Get acutal query from client via POST
 
 export async function GET() {
-	const people = new Treeize();
-	people.setOptions({ output: { prune: false } });
-	let knex = await knexConnect();
-	const x = await knex('employees')
-		.select(
-			'employees.*',
-			'languages.language as languages:language',
-			'interests.interest as interests:interest'
-		)
-		.leftJoin('languages', 'employees.PersonID', 'languages.PersonID')
-		.leftJoin('interests', 'employees.PersonID', 'interests.PersonID')
-		.where({ age: 66 });
-	people.grow(x);
+	const prisma = new PrismaClient();
 
-	const treeized = people.getData().map((x) => ({
-		...x,
-		languages: Object.values(x.languages).map((y) => y.language),
-		interests: Object.values(x.interests).map((y) => y.interest)
-	}));
+	let users;
 
-	return json(treeized);
+	async function main() {
+		// ? Create user schema
+		// const user = await prisma.employees.create({
+		// 	data: {
+		// 		name: 'Stefan',
+		// 		surname: 'Woźniak',
+		// 		age: 73,
+		// 		mail: 'steve.wozniak@gmail.com',
+		// 		phone: '123456789',
+		// 		job: 'wynalazca',
+		// 		education: 'UC Berkely College of Engineering',
+		// 		known_languages: {
+		// 			create: [{ name: 'angielski' }, { name: 'niemiecki' }]
+		// 		}
+		// 	}
+		// });
+		// console.log(user);
+		const raw = await prisma.employees.findMany({
+			include: {
+				known_languages: true,
+				interests: true
+			}
+		});
+		users = raw.map((x) => ({
+			...x,
+			known_languages: Object.values(x.known_languages).map((y) => y.name),
+			interests: Object.values(x.interests).map((y) => y.name)
+		}));
+	}
+
+	await main()
+		.then(async () => {
+			await prisma.$disconnect();
+		})
+		.catch(async (e) => {
+			console.error(e);
+			await prisma.$disconnect();
+			process.exit(1);
+		});
+
+	return json(users);
 }
