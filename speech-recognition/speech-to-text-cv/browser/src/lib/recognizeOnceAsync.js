@@ -1,5 +1,5 @@
-import { getTokenOrRefresh } from '$lib/token_util';
-import { messageStore, resultStore } from '$lib/store';
+import { getTokenOrRefresh } from './token_util';
+import { messageStore, resultStore } from './store';
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
 
 export async function fromMicOnce() {

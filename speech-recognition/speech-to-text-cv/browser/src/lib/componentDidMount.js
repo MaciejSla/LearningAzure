@@ -1,5 +1,5 @@
-import { getTokenOrRefresh } from '$lib/token_util';
-import { messageStore } from '$lib/store';
+import { getTokenOrRefresh } from './token_util';
+import { messageStore } from './store';
 
 export async function componentDidMount() {
 	const tokenRes = await getTokenOrRefresh();
