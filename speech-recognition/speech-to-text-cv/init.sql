@@ -6,21 +6,22 @@ SET NAMES 'utf8mb4';
 -- CreateTable
 CREATE TABLE `employees` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `surname` VARCHAR(50) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `surname` VARCHAR(191) NOT NULL,
     `age` INTEGER NOT NULL,
-    `mail` VARCHAR(100) NOT NULL,
+    `mail` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(9) NOT NULL,
-    `job` VARCHAR(80) NOT NULL,
-    `education` VARCHAR(255) NOT NULL,
+    `job` VARCHAR(191) NOT NULL,
+    `education` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `employees_mail_key`(`mail`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `languages` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `userId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -29,7 +30,7 @@ CREATE TABLE `languages` (
 -- CreateTable
 CREATE TABLE `interests` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(80) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `userId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)

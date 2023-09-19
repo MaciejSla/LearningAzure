@@ -8,28 +8,28 @@ datasource db {
 }
 
 model employees {
-  id              Int        @id @default(autoincrement())
-  name            String     @db.VarChar(50)
-  surname         String     @db.VarChar(50)
-  age             Int        @db.Int
-  mail            String     @db.VarChar(100)
-  phone           String     @db.VarChar(9)
-  job             String     @db.VarChar(80)
-  education       String     @db.VarChar(255)
+  id              Int         @id @default(autoincrement())
+  name            String
+  surname         String
+  age             Int
+  mail            String      @unique
+  phone           String      @db.VarChar(9)
+  job             String
+  education       String
   known_languages languages[]
   interests       interests[]
 }
 
 model languages {
-  id     Int    @id @default(autoincrement())
-  name   String @db.VarChar(50)
-  User   employees   @relation(fields: [userId], references: [id])
+  id     Int       @id @default(autoincrement())
+  name   String
+  User   employees @relation(fields: [userId], references: [id])
   userId Int
 }
 
 model interests {
-  id     Int    @id @default(autoincrement())
-  name   String @db.VarChar(80)
-  User   employees   @relation(fields: [userId], references: [id])
+  id     Int       @id @default(autoincrement())
+  name   String
+  User   employees @relation(fields: [userId], references: [id])
   userId Int
 }
