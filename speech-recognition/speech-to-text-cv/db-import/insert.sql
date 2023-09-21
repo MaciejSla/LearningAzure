@@ -1,4 +1,5 @@
 USE testdb;
+SET NAMES 'utf8mb4';
 
 INSERT INTO employees VALUES 
   (1, 'Stefan', 'Woźniak', 73, 'steve.wozniak@gmail.com', '123456789', 'wynalazca', 'UC Berkely College of Engineering'),
