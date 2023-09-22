@@ -2,8 +2,21 @@
 	import { schema } from '$lib/schema.js';
     import { superForm } from 'sveltekit-superforms/client'
     import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+    import { fromMicOnce } from '$lib/recognizeOnceAsync.js';
+	import { writable } from 'svelte/store';
+    import axios from 'axios';
 
     export let data;
+    let text = '';
+    const voiceMessage = writable('')
+    const result = writable('')
+
+    result.subscribe(value => {
+        text = value;
+        if (value != '') {
+            askGPT()
+        }
+    })
 
     const { form, enhance, errors, message } = superForm(data.form, {
         dataType: 'json',
@@ -18,6 +31,32 @@
         field.pop()
         $form = $form
     }
+    async function startRecognition() {
+        text = "speak into your microphone..."
+        fromMicOnce(voiceMessage, result)
+    }
+
+    async function askGPT() {
+        $voiceMessage = "loading..."
+        axios.post('/api/get-completion', {text}).then(res => {
+            const values = res.data
+            if (values.known_languages) {
+                values.known_languages = {
+                    create: values.known_languages.map(x => ({name: x}))
+                }
+            }
+            if (values.interests) {
+                values.interests = {
+                    create: values.interests.map(x => ({name: x}))
+                }
+            }
+            $form = {...$form, ...values}
+            $voiceMessage = 'Filled form'
+        }).catch(err => {
+            $voiceMessage = err.response.data
+        })
+    }
+    let w;
 </script>
 
 <style>
@@ -29,7 +68,11 @@
 <SuperDebug data={$form} />
 
 <br>
-
+<!-- <p>Komenda: {text}</p> -->
+<input type="text" bind:value={text} style="display: flex;" size={text.length > 20 ? text.length : 20}>
+<button on:click={startRecognition}>Voice</button>
+<button on:click={askGPT}>Send</button>
+<p>{$voiceMessage}</p>
 <form method="POST" use:enhance>
     <div>
         <label for="name">Name</label>
