@@ -1,11 +1,13 @@
 <script>
+	import { schema } from '$lib/schema.js';
     import { superForm } from 'sveltekit-superforms/client'
     import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
     export let data;
 
-    const { form, enhance } = superForm(data.form, {
-        dataType: 'json'
+    const { form, enhance, errors, message } = superForm(data.form, {
+        dataType: 'json',
+        validators: schema,
     })
 
     function addField(field) {
@@ -18,6 +20,12 @@
     }
 </script>
 
+<style>
+    small {
+        color: red;
+    }
+</style>
+
 <SuperDebug data={$form} />
 
 <br>
@@ -26,26 +34,45 @@
     <div>
         <label for="name">Name</label>
         <input type="text" name="name" bind:value={$form.name} placeholder="Name">
+        {#if $errors.name}
+        <br>
+        <small>{$errors.name[0]}</small>
+        {/if}
     </div>
-
     <div>
         <label for="name">Surname</label>
         <input type="text" name="surname" bind:value={$form.surname} placeholder="Surname">
+        {#if $errors.surname}
+        <br>
+        <small>{$errors.surname[0]}</small>
+        {/if}
     </div>
 
     <div>
         <label for="name">Age</label>
-        <input type="text" name="age" bind:value={$form.age} >
+        <input type="text" name="age" bind:value={$form.age} placeholder="Age" >
+        {#if $errors.age}
+        <br>
+        <small>{$errors.age[0]}</small>
+        {/if}
     </div>
 
     <div>
         <label for="name">Email</label>
-        <input type="email" name="mail" bind:value={$form.mail} placeholder="Email goes here..." >
+        <input type="text" name="mail" bind:value={$form.mail} placeholder="Email goes here..." >
+        {#if $errors.mail}
+        <br>
+        <small>{$errors.mail[0]}</small>
+        {/if}
     </div>
 
     <div>
         <label for="name">Phone number</label>
-        <input type="tel" name="phone" bind:value={$form.phone} placeholder="123456789">
+        <input type="tel" name="phone" bind:value={$form.phone} placeholder="ex. 123456789">
+        {#if $errors.phone}
+        <br>
+        <small>{$errors.phone[0]}</small>
+        {/if}
     </div>
 
     <div>
@@ -65,7 +92,11 @@
     </div>
     {#each $form.known_languages.create as _, i}
     <div>
-        <input type="text" name="name" bind:value={$form.known_languages.create[i].name}>
+        <input type="text" name="name" bind:value={$form.known_languages.create[i].name} placeholder="Enter language here...">
+        {#if $errors.known_languages?.create[i].name}
+        <br>
+        <small>{$errors.known_languages?.create[i].name[0]}</small>
+        {/if}
     </div>
     {/each}
     
@@ -76,10 +107,17 @@
     </div>
     {#each $form.interests.create as _, i}
     <div>
-        <input type="text" name="name" bind:value={$form.interests.create[i].name}>
+        <input type="text" name="name" bind:value={$form.interests.create[i].name} placeholder="Enter interest here...">
+        {#if $errors.interests?.create[i].name}
+        <br>
+        <small>{$errors.interests?.create[i].name[0]}</small>
+        {/if}
     </div>
     {/each}
 
     <br>
     <input type="submit" value="Submit">
+    {#if $message}
+    {$message}  
+    {/if}
 </form>
