@@ -36,7 +36,7 @@
 </script>
 
 <p>Komenda: {text}</p>
-<input type="text" bind:value={text} style="display: flex; width: auto;">
+<input type="text" bind:value={text} style="display: flex;" size={text.length > 20 ? text.length : 20}>
 <button on:click={startRecognition}>Voice</button>
 <button on:click={askGPT}>Send</button>
 <p>{$message}</p>
