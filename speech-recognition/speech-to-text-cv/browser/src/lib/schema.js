@@ -33,9 +33,14 @@ export const schema = z.object({
 			required_error: 'Email is required'
 		})
 		.email({ message: 'Invalid email address' }),
-	phone: z.string().length(9, { message: 'Invalid phone number' }).optional().or(z.literal('')),
-	job: z.string().optional(),
-	education: z.string().optional(),
+	phone: z
+		.string()
+		.length(9, { message: 'Invalid phone number' })
+		.optional()
+		.or(z.literal(''))
+		.default(''),
+	job: z.string(),
+	education: z.string(),
 	known_languages: z.object({
 		create: z.array(
 			z
