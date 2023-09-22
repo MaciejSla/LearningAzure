@@ -9,9 +9,6 @@
         gap: 2em;
         place-content: center;
     }
-    a {
-        
-    }
 </style>
 
 <slot />
