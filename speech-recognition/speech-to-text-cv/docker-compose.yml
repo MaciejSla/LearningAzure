@@ -1,28 +1,28 @@
 version: "3"
 services:
-  # client:
-  #   build: ./browser
-  #   environment:
-  #     SPEECH_KEY: ${SPEECH_KEY}
-  #     SPEECH_REGION: ${SPEECH_REGION}
-  #     OPENAI_API_KEY: ${OPENAI_API_KEY}
-  #     OPENAI_API_ENDPOINT: ${OPENAI_API_ENDPOINT}
-  #     DATABASE_URL: mysql://root:root@db:3306/testdb
-  #   ports:
-  #     - 80:4173
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
+  client:
+    build: ./browser
+    environment:
+      SPEECH_KEY: ${SPEECH_KEY}
+      SPEECH_REGION: ${SPEECH_REGION}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_API_ENDPOINT: ${OPENAI_API_ENDPOINT}
+      DATABASE_URL: mysql://root:root@db:3306/testdb
+    ports:
+      - 80:4173
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     image: mysql:8
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./db-import:/docker-entrypoint-initdb.d/
-    ports:
-      - 3306:3306
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:3306"]
-    #   interval: 5s
-    #   timeout: 10s
-    #   retries: 15
+    # ports:
+    #   - 3306:3306
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3306"]
+      interval: 5s
+      timeout: 10s
+      retries: 15
