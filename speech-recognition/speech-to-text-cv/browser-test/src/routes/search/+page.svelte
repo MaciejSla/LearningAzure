@@ -8,6 +8,7 @@
         componentDidMount(message)
     });
     let text = '';
+    let userArr = [];
     const message = writable('')
     const result = writable('')
     result.subscribe((value) => {
@@ -22,9 +23,10 @@
     }
     async function askGPT() {
         $message = "loading..."
-        axios.post('/api/get-completion', {text: $result}).then(res => {
+        axios.post('/api/get-completion', {text}).then(res => {
             axios.post('/api/db/getUser', res.data).then(res2 => {
-                $message = JSON.stringify(res2.data)
+                userArr = res2.data
+                $message = ''
             }).catch(err => {
                 $message = err.response.data
             })
@@ -44,13 +46,10 @@
             <button class="variant-filled-secondary" on:click={askGPT}>Send</button>
         </div>
     </div>
-    <!-- <label class="label mb-5">
-        <span>Command</span>
-        <input type="search" bind:value={text} title="Command" class="input" size={text.length > 20 ? text.length : 20}>
-    </label>
-    <div class="flex gap-5">
-        <button on:click={startRecognition} class="btn variant-filled-tertiary">Voice</button>
-        <button on:click={askGPT} class="btn variant-filled-tertiary">Send</button>
-    </div> -->
     <p class="flex justify-center">{$message}</p>
+    <section class="p-4 space-y-4">
+        {#each userArr as user, i }
+            <pre class="variant-glass-surface p-4 rounded-xl ">{JSON.stringify(user, null, 2)}</pre>
+        {/each}
+    </section>
 </div>
