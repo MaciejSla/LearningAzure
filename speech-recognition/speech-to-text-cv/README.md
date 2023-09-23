@@ -35,7 +35,7 @@ Należy utworzyć plik `.env` w katalogu **`speech-recognition\speech-to-text-cv
 - `SPEECH_KEY` - Klucz usługi Azure Speech
 - `SPEECH_REGION` - Region usługi Azure Speech
 - `OPENAI_API_KEY` - Klucz usługi Azure OpenAI
-- `OPENAI_API_ENDPOINT` - Koniec punktu usługi Azure OpenAI
+- `OPENAI_API_ENDPOINT` - Endpoint usługi Azure OpenAI
 - _`DATABASE_URL` (opcjonalne)_ - Domyślny adres URL bazy danych jest dostępny w pliku `docker-compose.yml` i może być zmieniony, jeśli jest to konieczne.
 
 **Należy pamiętać, że aplikacja nie będzie działać poprawnie bez prawidłowo ustawionych zmiennych środowiskowych.**
