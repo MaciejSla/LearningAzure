@@ -42,6 +42,6 @@ Należy utworzyć plik `.env` w katalogu **`speech-recognition\speech-to-text-cv
 
 ### Uruchamianie
 
-Aby uruchomić ten projekt, użyj następującej komendy: `docker-compose up -d build`.
+Aby uruchomić ten projekt, użyj następującej komendy: `docker-compose up -d --build`.
 
 Po uruchomieniu obu kontenerów, witryna będzie dostępna pod adresem http://localhost.
