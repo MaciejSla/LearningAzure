@@ -12,7 +12,9 @@
 <AppBar gridColumns='grid-cols-3' slotDefault='place-self-center gap-5' slotTrail='place-content-end'>
 	<svelte:fragment slot="lead">
 		<section>
-			<h2 class="h2">Learning Azure</h2>
+			<h2 class="h2">
+				<a href="/">Learning Azure</a>
+			</h2>
 		</section>
 	</svelte:fragment>
 	<div class="flex justify-center gap-5">
