@@ -7,7 +7,7 @@ services:
       SPEECH_REGION: ${SPEECH_REGION}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       OPENAI_API_ENDPOINT: ${OPENAI_API_ENDPOINT}
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: mysql://root:root@db:3306/testdb
     ports:
       - 80:4173
     depends_on:
