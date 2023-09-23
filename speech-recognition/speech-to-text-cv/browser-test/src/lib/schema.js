@@ -8,7 +8,9 @@ export const schema = z.object({
 		.string({
 			required_error: 'Name is required'
 		})
-		.min(1)
+		.min(1, {
+			message: 'Name must contain at least 1 character'
+		})
 		.regex(regex, {
 			message: 'Invalid character in name'
 		}),
@@ -16,7 +18,9 @@ export const schema = z.object({
 		.string({
 			required_error: 'Surname is required'
 		})
-		.min(1)
+		.min(1, {
+			message: 'Surname must contain at least 1 character'
+		})
 		.regex(regex, {
 			message: 'Invalid character in surname'
 		}),
@@ -44,27 +48,19 @@ export const schema = z.object({
 	known_languages: z.object({
 		create: z.array(
 			z
-				.object({
-					name: z
-						.string({
-							required_error: 'Field cannot be left blank'
-						})
-						.min(1)
+				.string({
+					required_error: 'Field cannot be left blank'
 				})
-				.optional()
+				.min(1)
 		)
 	}),
 	interests: z.object({
 		create: z.array(
 			z
-				.object({
-					name: z
-						.string({
-							required_error: 'Field cannot be left blank'
-						})
-						.min(1)
+				.string({
+					required_error: 'Field cannot be left blank'
 				})
-				.optional()
+				.min(1)
 		)
 	})
 });
