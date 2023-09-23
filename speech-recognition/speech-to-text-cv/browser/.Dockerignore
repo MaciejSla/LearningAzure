@@ -11,6 +11,9 @@ node_modules
 .prettierrc
 .pretieriignore
 
+.gitignore
+.env
+
 README.md
 
 Dockerfile

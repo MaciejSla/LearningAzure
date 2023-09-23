@@ -22,6 +22,13 @@ export const actions = {
 		} else {
 			const empty = await superValidate(schema);
 			const user = form.data;
+			if (user.known_languages.create) {
+				user.known_languages.create = user.known_languages.create.map((x) => ({ name: x }));
+			}
+			console.log(user.known_languages.create);
+			if (user.interests.create) {
+				user.interests.create = user.interests.create.map((x) => ({ name: x }));
+			}
 			const mail = user.mail;
 
 			async function main() {
@@ -31,13 +38,17 @@ export const actions = {
 					}
 				});
 				if (mailExists) {
-					return message(form, 'User with this email already exists', { status: 400 });
+					return message(
+						form,
+						{ text: 'User with this email already exists', type: 'error' },
+						{ status: 400 }
+					);
 				}
 				const createdUser = await prisma.employees.create({
 					data: user
 				});
 				console.log(createdUser);
-				return message(empty, 'User added!');
+				return message(empty, { text: 'User added!', type: 'success' });
 			}
 
 			return await main();

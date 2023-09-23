@@ -66,7 +66,7 @@ export async function POST({ request }) {
 					typeof completion.interests == 'string' ? [completion.interests] : completion.interests;
 			}
 		} catch {
-			return new Response('Incorrect information given - cannot parse input.', { status: 422 });
+			return new Response('Error parsing input - please try again', { status: 422 });
 		}
 
 		if (!Object.keys(completion).every((val) => fields.includes(val))) {

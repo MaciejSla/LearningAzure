@@ -9,15 +9,16 @@ export async function fromMicOnce(messageStore, resultStore) {
 	const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
 	const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
-	messageStore.set('');
+	// messageStore.set('');
 
 	recognizer.recognizeOnceAsync((result) => {
 		if (result.reason === sdk.ResultReason.RecognizedSpeech) {
 			resultStore.set(result.text);
 		} else {
-			messageStore.set(
-				'ERROR: Speech was cancelled or could not be recognized. Ensure your microphone is working properly.'
-			);
+			messageStore.set({
+				text: 'ERROR: Speech was cancelled or could not be recognized. Ensure your microphone is working properly.',
+				type: 'error'
+			});
 			// resultStore.set('');
 		}
 	});
