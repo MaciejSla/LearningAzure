@@ -12,4 +12,4 @@ RUN pnpm install
 COPY . .
 
 EXPOSE 4173
-CMD [ "/bin/bash", "-c", "pnpm prisma generate;pnpm run build;pnpm run preview" ]
+CMD [ "/bin/bash", "-c", "pnpm prisma generate;pnpm build;pnpm preview" ]
