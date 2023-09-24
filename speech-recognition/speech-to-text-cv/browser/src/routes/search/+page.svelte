@@ -18,10 +18,10 @@
 
     message.subscribe(val => {
         isListening = false
-        if (val?.type) {
+        if (val?.background) {
             toastStore.trigger({
                 message: val.text,
-                background: val.type == 'error' ? `variant-filled-error` : `variant-filled-success`,
+                background: val.background,
             })
         }
     })
@@ -43,18 +43,21 @@
         isLoading = true
         await axios.post('/api/get-completion', {text}).then(res => {
             axios.post('/api/db/getUser', res.data).then(res2 => {
-                userArr = res2.data
+                if (res2.data.length == 0) {
+                    userArr = ["No records found"]
+                } else {
+                    userArr = res2.data
+                }
             }).catch(err => {
-                $message = {text: err.response.data, type: 'error'}
+                $message = {text: err.response.data, background: 'variant-filled-error'}
             })
         }).catch(err => {
-            $message = {text: err.response.data, type: 'error'}
+            $message = {text: err.response.data, background: 'variant-filled-error'}
         })
         isLoading = false
     }
 
 </script>
-
 <Toast />
 
 <div class="flex flex-col items-center mt-10">

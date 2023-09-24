@@ -17,7 +17,7 @@ export async function fromMicOnce(messageStore, resultStore) {
 		} else {
 			messageStore.set({
 				text: 'ERROR: Speech was cancelled or could not be recognized. Ensure your microphone is working properly.',
-				type: 'error'
+				background: 'variant-filled-error'
 			});
 			// resultStore.set('');
 		}

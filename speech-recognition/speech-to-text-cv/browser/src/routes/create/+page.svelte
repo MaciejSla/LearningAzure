@@ -25,10 +25,10 @@
 
     voiceMessage.subscribe(val => {
         isListening = false
-        if (val?.type) {
+        if (val?.background) {
             toastStore.trigger({
                 message: val.text,
-                background: val.type == 'error' ? `variant-filled-error` : `variant-filled-success`,
+                background: val.background,
             })
         }
     })
@@ -39,10 +39,10 @@
     })
 
     message.subscribe(val => {
-        if (val?.type) {
+        if (val?.background) {
             toastStore.trigger({
                 message: val.text,
-                background: val.type == 'error' ? `variant-filled-error` : `variant-filled-success`,
+                background: val.background,
             })
         }
     })
@@ -67,9 +67,9 @@
                 }
             }
             $form = {...$form, ...values}
-            $voiceMessage = {text: 'Filled form', type: 'success'}
+            $voiceMessage = {text: 'Filled form', background: 'variant-filled-success'}
         }).catch(err => {
-            $voiceMessage = {text: err.response.data, type: 'error'}
+            $voiceMessage = {text: err.response.data, background: 'variant-filled-error'}
         })
         isLoading = false
     }
