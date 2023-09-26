@@ -1,14 +1,11 @@
 <script>
     import {fromMicOnce} from '$lib/recognizeOnceAsync'
-    import {componentDidMount} from '$lib/componentDidMount'
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
     import axios from 'axios';
 	import { writable } from 'svelte/store';
     import { getToastStore, Toast, ProgressRadial } from '@skeletonlabs/skeleton';
+
     const toastStore = getToastStore()
-	onMount(() => {
-        componentDidMount(message)
-    });
     let isLoading = false
     let isListening = false
     let text = '';

@@ -1,6 +1,5 @@
 import { schema } from '$lib/schema';
 import { fail } from '@sveltejs/kit';
-import axios from 'axios';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { prisma } from '$lib/prisma';
 

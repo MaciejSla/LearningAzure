@@ -1,7 +1,6 @@
 <script>
 	import { schema } from '$lib/schema.js';
     import { superForm } from 'sveltekit-superforms/client'
-    import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
     import { fromMicOnce } from '$lib/recognizeOnceAsync.js';
 	import { writable } from 'svelte/store';
     import axios from 'axios';
