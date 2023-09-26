@@ -49,6 +49,7 @@
     })
 
     async function startRecognition() {
+        text = ''
         isListening = true
         fromMicOnce(voiceMessage, result)
     }

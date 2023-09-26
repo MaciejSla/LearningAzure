@@ -35,14 +35,15 @@
     })
 
     async function startRecognition() {
+        text = ''
         isListening = true
         fromMicOnce(message, result)
     }
 
     async function askGPT() {
         isLoading = true
-        await axios.post('/api/get-completion', {text}).then(res => {
-            axios.post('/api/db/getUser', res.data).then(res2 => {
+        await axios.post('/api/get-completion', {text}).then(async (res) => {
+            await axios.post('/api/db/getUser', res.data).then(res2 => {
                 if (res2.data.length == 0) {
                     userArr = ["No records found"]
                 } else {
