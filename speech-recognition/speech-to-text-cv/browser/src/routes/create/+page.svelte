@@ -6,6 +6,7 @@
 	import { writable } from 'svelte/store';
     import axios from 'axios';
     import { InputChip, getToastStore, Toast, ProgressRadial } from '@skeletonlabs/skeleton';
+	import { onDestroy } from 'svelte';
 
     const toastStore = getToastStore();
     export let data;
@@ -15,7 +16,7 @@
     const voiceMessage = writable('')
     const result = writable('')
 
-    result.subscribe(value => {
+    const resultUnsubscribe = result.subscribe(value => {
         text = value;
         if (value != '') {
             askGPT()
@@ -23,7 +24,7 @@
         }
     })
 
-    voiceMessage.subscribe(val => {
+    const voiceMessageUnsubscribe = voiceMessage.subscribe(val => {
         isListening = false
         if (val?.background) {
             toastStore.trigger({
@@ -38,7 +39,7 @@
         validators: schema,
     })
 
-    message.subscribe(val => {
+    const messageUnsubscribe = message.subscribe(val => {
         if (val?.background) {
             toastStore.trigger({
                 message: val.text,
@@ -73,6 +74,12 @@
         })
         isLoading = false
     }
+
+    onDestroy(() => {
+        messageUnsubscribe();
+        resultUnsubscribe();
+        voiceMessageUnsubscribe();
+    })
 </script>
 
 <style>

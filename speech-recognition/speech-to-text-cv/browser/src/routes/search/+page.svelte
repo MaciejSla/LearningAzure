@@ -1,7 +1,7 @@
 <script>
     import {fromMicOnce} from '$lib/recognizeOnceAsync'
     import {componentDidMount} from '$lib/componentDidMount'
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
     import axios from 'axios';
 	import { writable } from 'svelte/store';
     import { getToastStore, Toast, ProgressRadial } from '@skeletonlabs/skeleton';
@@ -16,7 +16,7 @@
     const message = writable('')
     const result = writable('')
 
-    message.subscribe(val => {
+    const messageUnsubscribe = message.subscribe(val => {
         isListening = false
         if (val?.background) {
             toastStore.trigger({
@@ -26,7 +26,7 @@
         }
     })
 
-    result.subscribe((value) => {
+    const resultUnsubscribe = result.subscribe((value) => {
         text = value;
         if (value != '') {
             isListening = false
@@ -56,6 +56,11 @@
         })
         isLoading = false
     }
+
+    onDestroy(() => {
+        messageUnsubscribe();
+        resultUnsubscribe();
+    })
 
 </script>
 <Toast />
