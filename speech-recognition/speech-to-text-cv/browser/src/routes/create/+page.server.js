@@ -40,7 +40,7 @@ export const actions = {
 				if (mailExists) {
 					return message(
 						form,
-						{ text: 'User with this email already exists', type: 'error' },
+						{ text: 'User with this email already exists', background: 'variant-filled-error' },
 						{ status: 400 }
 					);
 				}
@@ -48,7 +48,7 @@ export const actions = {
 					data: user
 				});
 				console.log(createdUser);
-				return message(empty, { text: 'User added!', type: 'success' });
+				return message(empty, { text: 'User added!', background: 'variant-filled-success' });
 			}
 
 			return await main();
