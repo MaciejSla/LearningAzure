@@ -10,6 +10,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
 COPY . .
+RUN pnpm prisma generate
 
 EXPOSE 4173
-CMD [ "/bin/bash", "-c", "pnpm prisma generate;pnpm build;pnpm preview" ]
+CMD [ "/bin/bash", "-c", "pnpm build;pnpm preview" ]
